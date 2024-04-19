@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+</head>
+<body>
+
+<h2>Update User</h2>
+<form id="updateUserForm">
+    <input type="hidden" id="userId" name="userId" value=""/> <!-- Hidden field for storing user ID -->
+    
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+    
+      <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required min="0"><br><br>
+    
+
+    <input type="submit" value="Update User">
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var userId = getQueryVariable("id");
+        if (userId) {
+            fetchUser(userId); 
+        }
+
+        $('#updateUserForm').submit(function(event) {
+            event.preventDefault();
+            var userData = {
+                id: $('#userId').val(),
+                username: $('#username').val(),
+                password: $('#password').val(), 
+                email: $('#email').val(),
+                age: $('#age').val()
+            };
+
+            
+            var baseUrl = window.location.protocol + "//" + window.location.host + "/User-app/api/users/" + userId;
+
+            $.ajax({
+                url: baseUrl,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(userData),
+                dataType: 'json',
+                success: function(data) {
+                    alert('User updated successfully');
+                    window.location.href = 'index.html';
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error updating user: ' + errorThrown);
+                }
+            });
+        });
+
+        function fetchUser(userId) {
+            var baseUrl = window.location.protocol + "//" + window.location.host + "/User-app/api/users/" + userId;
+            $.ajax({
+                url: baseUrl,
+                type: 'GET',
+                dataType: 'json',
+                success: function(user) {
+                    $('#userId').val(user.id);
+                    $('#username').val(user.username);
+                    $('#password').val(''); 
+                    $('#email').val(user.email);
+                    $('#age').val(user.age === 0 ? "Default (e.g., 30)" : user.age);
+                },
+                error: function() {
+                    alert('Error loading user data');
+                }
+            });
+        }
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split('&');
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split('=');
+                if (decodeURIComponent(pair[0]) === variable) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+            return null;
+        }
+    });
+</script>
+
+</body>
+<a href="index.html">Back to User List</a>
+</html>

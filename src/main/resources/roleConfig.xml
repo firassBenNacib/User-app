@@ -1,0 +1,17 @@
+<configuration>
+    <userRoles>
+        <role name="admin">
+            <permissions>
+                <permission>create</permission>
+                <permission>update</permission>
+                <permission>delete</permission>
+                <permission>view</permission>
+            </permissions>
+        </role>
+        <role name="user">
+            <permissions>
+                <permission>view</permission>
+            </permissions>
+        </role>
+    </userRoles>
+</configuration>

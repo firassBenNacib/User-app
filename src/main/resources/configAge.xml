@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configAge>
+    <defaultAge>30</defaultAge>
+    <userAges>
+        <user id="1" age="25"/>
+        <user id="2" age="35"/>
+       
+    </userAges>
+</configAge>

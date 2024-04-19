@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add User</title>
+</head>
+<body>
+
+<h2>Add New User</h2>
+<form id="addUserForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+    
+       <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required min="0"><br><br>
+    
+
+    <input type="submit" value="Add User">
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#addUserForm').submit(function(event) {
+            event.preventDefault();
+            var userData = {
+                username: $('#username').val(),
+                password: $('#password').val(), 
+                email: $('#email').val(),
+                age: $('#age').val()
+            };
+
+          
+            var baseUrl = window.location.protocol + "//" + window.location.host + "/User-app/api/users";
+
+            $.ajax({
+                url: baseUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(userData),
+                dataType: 'json',
+                success: function(data) {
+                    alert('User added successfully');
+                    window.location.href = 'index.html'; 
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.responseText.includes("Username already exists")) {
+                        alert('Error adding user: Username already exists.');
+                    } else {
+                        alert('Error adding user: ' + errorThrown);
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+
+<a href="index.html">Back to User List</a>
+</html>

@@ -1,0 +1,20 @@
+
+mvnw
+mvnw.cmd
+.mvn/
+
+# Ignore Docker files
+Dockerfile
+.dockerignore
+
+
+target/
+.classpath
+.project
+.settings/
+README.txt
+
+
+
+
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
+    <persistence-unit name="UserAppPU" transaction-type="JTA">
+       <jta-data-source>java:/OracleDS</jta-data-source>
+        <properties>
+            <!-- Specify provider-specific properties here -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+          
+        </properties>
+    </persistence-unit>
+</persistence>
