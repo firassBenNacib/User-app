@@ -23,24 +23,22 @@ import javax.sql.DataSource;
 @Path("/users")
 public class UserResource {
 
-    private UserDAO userDao;
+    private final UserDAO userDao;
 
-    public UserResource() {
-        try {
-            InitialContext ctx = new InitialContext();
-            DataSource dataSource = lookupDataSource(ctx);
-            userDao = new UserDAO(dataSource);
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
+    public UserResource() throws NamingException {
+        this.userDao = new UserDAO(lookupDataSource());
     }
 
-    private DataSource lookupDataSource(InitialContext ctx) throws NamingException {
+   
+    public UserResource(UserDAO userDao) {
+        this.userDao = userDao;
+    }
+
+    private DataSource lookupDataSource() throws NamingException {
+        InitialContext ctx = new InitialContext();
         try {
-         
             return (DataSource) ctx.lookup("jdbc/OracleDS");
         } catch (NamingException e) {
- 
             return (DataSource) ctx.lookup("java:/OracleDS");
         }
     }
