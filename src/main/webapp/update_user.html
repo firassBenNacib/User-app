@@ -44,7 +44,6 @@
                 age: $('#age').val()
             };
 
-            
             var baseUrl = window.location.protocol + "//" + window.location.host + "/User-app/api/users/" + userId;
 
             $.ajax({
@@ -54,11 +53,11 @@
                 data: JSON.stringify(userData),
                 dataType: 'json',
                 success: function(data) {
-                    alert('User updated successfully');
+                    console.log('User updated successfully'); // Changed from alert to console.log
                     window.location.href = 'index.html';
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error updating user: ' + errorThrown);
+                    console.error('Error updating user: ' + errorThrown); // Changed from alert to console.error
                 }
             });
         });
@@ -76,8 +75,8 @@
                     $('#email').val(user.email);
                     $('#age').val(user.age === 0 ? "Default (e.g., 30)" : user.age);
                 },
-                error: function() {
-                    alert('Error loading user data');
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error loading user data: ' + errorThrown); // Changed from alert to console.error
                 }
             });
         }
@@ -95,6 +94,7 @@
         }
     });
 </script>
+
 
 </body>
 <a href="index.html">Back to User List</a>
