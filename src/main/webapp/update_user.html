@@ -3,28 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Update User</title>
+    <style>
+        .success { color: green; }
+        .error { color: red; }
+    </style>
 </head>
 <body>
 
 <h2>Update User</h2>
 <form id="updateUserForm">
-    <input type="hidden" id="userId" name="userId" value=""/> <!-- Hidden field for storing user ID -->
+    <input type="hidden" id="userId" name="userId" value=""/> 
     
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required><br><br>
 
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br><br>
+    <input type="password" id="password" name="password"><br><br>
 
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br><br>
+    <input type="email" id="email" name="email"><br><br>
     
-      <label for="age">Age:</label>
-    <input type="number" id="age" name="age" required min="0"><br><br>
-    
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" min="0"><br><br>
 
-    <input type="submit"  id="submit" value="Update User">
+    <input type="submit" id="submit" value="Update User">
 </form>
+
+<!-- Place for displaying messages -->
+<div id="message" style="display: none;"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -39,27 +45,25 @@
             var userData = {
                 id: $('#userId').val(),
                 username: $('#username').val(),
-                password: $('#password').val(), 
+                password: $('#password').val(),
                 email: $('#email').val(),
-                age: $('#age').val()
+                age: parseInt($('#age').val(), 10) || 0
             };
 
-            var baseUrl = window.location.protocol + "//" + window.location.host + "/User-app/api/users/" + userId;
-
+            var baseUrl = window.location.protocol + "//" + window.location.host + "/User-app/api/users/" + userData.id;
             $.ajax({
                 url: baseUrl,
-                type: 'PUT',
+                type: 'PUT',  
                 contentType: 'application/json',
                 data: JSON.stringify(userData),
-                dataType: 'json',
                 success: function(data) {
-                    console.log('User updated successfully'); // Changed from alert to console.log
-                    window.location.href = 'index.html';
+                    $('#message').text('User updated successfully').addClass('success').removeClass('error').show();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Error updating user: ' + errorThrown); // Changed from alert to console.error
+                    $('#message').text('Error updating user: ' + errorThrown).addClass('error').removeClass('success').show();
                 }
             });
+
         });
 
         function fetchUser(userId) {
@@ -73,10 +77,10 @@
                     $('#username').val(user.username);
                     $('#password').val(''); 
                     $('#email').val(user.email);
-                    $('#age').val(user.age === 0 ? "Default (e.g., 30)" : user.age);
+                    $('#age').val(user.age === 0 ? "" : user.age); 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Error loading user data: ' + errorThrown); // Changed from alert to console.error
+                    console.error('Error loading user data: ' + errorThrown);
                 }
             });
         }
@@ -95,7 +99,6 @@
     });
 </script>
 
-
-</body>
 <a href="index.html">Back to User List</a>
+</body>
 </html>

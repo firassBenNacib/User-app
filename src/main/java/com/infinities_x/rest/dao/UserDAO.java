@@ -126,23 +126,46 @@ public class UserDAO {
 
 
     public void updateUser(User user) throws SQLException {
-        String sql = "UPDATE users SET username = ?, password = ?, email = ?, age = ? WHERE id = ?";
+        List<String> fieldsToUpdate = new ArrayList<>();
+        if (user.getUsername() != null) {
+            fieldsToUpdate.add("username = ?");
+        }
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            fieldsToUpdate.add("password = ?");
+        }
+        if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+            fieldsToUpdate.add("email = ?");
+        }
+        if (user.getAge() > 0) {
+            fieldsToUpdate.add("age = ?");
+        }
+
+        if (fieldsToUpdate.isEmpty()) {
+            throw new SQLException("No fields provided for update.");
+        }
+
+        String sql = "UPDATE users SET " + String.join(", ", fieldsToUpdate) + " WHERE id = ?";
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            
-            pstmt.setString(1, user.getUsername());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getEmail());
 
-            int currentAge = getCurrentAgeById(user.getId());
-            Integer ageFromConfig = ConfigAgeLoader.getAgeForUserId(user.getId());
-            int ageToSet = (currentAge == 0 && ageFromConfig != null) ? ageFromConfig : user.getAge();
-
-            pstmt.setInt(4, ageToSet);
-            pstmt.setInt(5, user.getId());
+            int index = 1;
+            for (String field : fieldsToUpdate) {
+                if (field.contains("username")) {
+                    pstmt.setString(index++, user.getUsername());
+                } else if (field.contains("password")) {
+                    pstmt.setString(index++, user.getPassword());
+                } else if (field.contains("email")) {
+                    pstmt.setString(index++, user.getEmail());
+                } else if (field.contains("age")) {
+                    pstmt.setInt(index++, user.getAge());
+                }
+            }
+            pstmt.setInt(index, user.getId());
             pstmt.executeUpdate();
         }
     }
+
 
 
     public void deleteUser(int id) throws SQLException {
