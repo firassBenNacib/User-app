@@ -3,8 +3,7 @@ mvnw
 mvnw.cmd
 .mvn/
 
-# Ignore Docker files
-Dockerfile
+
 .dockerignore
 
 
