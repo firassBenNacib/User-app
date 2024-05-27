@@ -138,13 +138,13 @@
         </plugins>
     </build>
 
-     <distributionManagement>
+      <distributionManagement>
     <repository>
       <id>deploymentRepo</id>
       <url>http://172.21.146.157:8081/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
-      <id>devRepo</id>
+      <id>qaRepo</id>
       <url>http://172.21.146.157:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
