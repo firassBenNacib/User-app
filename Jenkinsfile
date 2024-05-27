@@ -2,9 +2,7 @@ pipeline {
     agent any
     
      environment {
-        DOCKER_CREDENTIALS_ID = 'docker-hub-creds'  
-        DOCKER_IMAGE_NAME = 'firaskill12/user-app-Prod'
-        IMAGE_TAG = 'latest'
+
 }
     stages {
         stage('CheckOut') {
