@@ -1,10 +1,15 @@
 pipeline {
     agent any
-
+    
+     environment {
+        DOCKER_CREDENTIALS_ID = 'docker-hub-creds'  
+        DOCKER_IMAGE_NAME = 'firaskill12/user-app-Prod'
+        IMAGE_TAG = 'latest'
+}
     stages {
         stage('CheckOut') {
             steps {
-                git branch: 'main', url: 'https://github.com/firassBenNacib/User-app.git', credentialsId: 'github-creds'
+                git branch: 'Prod', url: 'https://github.com/firassBenNacib/User-app.git', credentialsId: 'github-creds'
             }
         }
         
@@ -16,13 +21,19 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh "mvn clean package"
+                sh "mvn package"
             }
         }
         
         stage('Test') {
             steps {
-                sh "mvn test"
+                sh "mvn test jacoco:report"
+            }
+        }
+        
+             stage('File System Scan') {
+            steps {
+                sh "trivy fs --format table -o trivy-fs-report.html ."
             }
         }
         
@@ -44,10 +55,12 @@ pipeline {
             }
         }
         
-        stage("Deploy to Nexus") {
+          stage("Deploy to Nexus") {
             steps {
                 sh "mvn deploy"
             }
         }
+
     }
-}
+        
+    }
