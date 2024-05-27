@@ -1,9 +1,8 @@
 pipeline {
     agent any
     
-     environment {
-      
-}
+ 
+
     stages {
         stage('CheckOut') {
             steps {
