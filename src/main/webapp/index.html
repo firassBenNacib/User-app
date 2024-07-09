@@ -92,7 +92,7 @@ $(document).ready(function() {
         $.each(filteredUsers, function(i, user) {
             var updateButton = '<button onclick="location.href=\'update_user.html?id=' + user.id + '\'">Update</button>';
             var deleteButton = featureToggles.allowUserDeletion ? '<button onclick="deleteUser(' + user.id + ')">Delete</button>' : '';
-            $('#usersTable tbody').append('<tr><td>' + user.id + '</td><td>' + user.username + '</td><td>' + user.email + '</td><td>' + user.age + '</td><td>' + updateButton + ' ' + deleteButton + '</td></tr>');
+            $('#usersTable tbody').append('</td><td>' + user.username + '</td><td>' + user.email + '</td><td>' + user.age + '</td><td>' + updateButton + ' ' + deleteButton + '</td></tr>');
         });
     }
 
