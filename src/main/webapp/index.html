@@ -37,10 +37,9 @@
 <table id="usersTable">
     <thead>
         <tr>
-       <!--       <th>ID</th> -->
             <th>Username</th>
             <th>Email</th>
-            <th>Age</th> 
+            <th>Age</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -92,11 +91,10 @@ $(document).ready(function() {
         $.each(filteredUsers, function(i, user) {
             var updateButton = '<button onclick="location.href=\'update_user.html?id=' + user.id + '\'">Update</button>';
             var deleteButton = featureToggles.allowUserDeletion ? '<button onclick="deleteUser(' + user.id + ')">Delete</button>' : '';
-            $('#usersTable tbody').append('</td><td>' + user.username + '</td><td>' + user.email + '</td><td>' + user.age + '</td><td>' + updateButton + ' ' + deleteButton + '</td></tr>');
+            $('#usersTable tbody').append('<tr><td>' + user.username + '</td><td>' + user.email + '</td><td>' + user.age + '</td><td>' + updateButton + ' ' + deleteButton + '</td></tr>');
         });
     }
 
-   
     fetchFeatureToggles();
     
     $('#searchUsername').on('input', function() {
